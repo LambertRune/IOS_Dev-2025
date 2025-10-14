@@ -1,14 +1,14 @@
 //
-//  TripPlannerApp.swift
-//  TripPlanner
+//  RPNCalculatorApp.swift
+//  RPNCalculator
 //
-//  Created by Rune Lambert on 30/09/2025.
+//  Created by Rune Lambert on 08/10/2025.
 //
 
 import SwiftUI
 
 @main
-struct TripPlannerApp: App {
+struct RPNCalculatorApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
