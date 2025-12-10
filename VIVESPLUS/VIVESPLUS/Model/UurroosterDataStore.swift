@@ -12,27 +12,62 @@ class UurroosterDataStore {
     var uurrooster : [EventModel]
     
     init() {
-        
+        uurrooster = [EventModel]()
     }
     
     private func sort(){
-       
-    }
-    
-    func addEvent(event: EventModel ){
+            uurrooster.sort { ur1, ur2 in
+                ur1.startDateTime > ur2.startDateTime
+            }
+        }
         
-    }
-    
-    func updateEvent(event: EventModel ){
+        func addEvent(event: EventModel ){
+            event.id = UUID().uuidString
+            uurrooster.append(event)
+            sort()
+        }
         
-    }
-    
-    func deleteEvent(id: String) {
-       
-    }
+        func updateEvent(event: EventModel ){
+            for model in uurrooster {
+                if event.id.elementsEqual(model.id) {
+                    model.allDay = event.allDay
+                    model.title = event.title
+                    model.location = event.location
+                    model.endDateTime = event.endDateTime
+                    model.startDateTime = event.startDateTime
+                    model.type = event.type
+                }
+            }
+            sort()
+        }
+        
+        func deleteEvent(id: String) {
+            uurrooster = uurrooster.filter({ eventInList in
+                return !eventInList.id.elementsEqual(id)
+            })
+        }
+        
+        func getEvent(id: String) -> EventModel {
+            let filtered = uurrooster.filter { event in
+                return event.id.elementsEqual(id)
+            }
+            if filtered.count  > 0 {
+                return filtered[0]
+            } else {
+                return EventModel()
+            }
+        }
     
     func getEvent(id: String) -> EventModel {
-        
+        let filtered = uurrooster.filter({
+            eventInList in
+            return eventInList.id.elementsEqual(id)
+        })
+        if filtered.count > 0 {
+            return filtered[0]
+        } else{
+            return EventModel()
+        }
     }
     
     func loadData() async {
@@ -41,7 +76,10 @@ class UurroosterDataStore {
             print("⏳ Simulating 2-second load delay...")
             try await Task.sleep(for: .seconds(2)) // Simulate long load
             let data: [EventModelJson] = try load("uurrooster.json")
-            //Hier komt mapping naar array van EventModel -> uurrooster
+            uurrooster = data.map({
+                EventModelJson in
+                EventModelJson.toEventModel()
+            })
             sort()
             print("✅ Data loaded successfully.")
             
