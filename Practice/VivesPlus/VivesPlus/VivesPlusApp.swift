@@ -11,7 +11,7 @@ import SwiftUI
 struct VivesPlusApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            ContentView().environment(UurroosterDataStore())
         }
     }
 }
